@@ -33,6 +33,6 @@ def show_selection():
 def cleaned():
     del NAMES, LINKS, CHART_LIST,F
 
-#Main
+#Main functions
 	get_selection()    
 	cleaned()
