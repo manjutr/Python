@@ -1,0 +1,38 @@
+from urllib.request import urlopen
+import csv
+from bs4 import BeautifulSoup
+
+global NAMES
+global LINKS
+global CHART_LIST
+global F
+
+def get_selection():
+    global NAMES
+    global LINKS
+    global CHART_LIST
+    global F
+    
+    url = "https://soundcloud.com/charts/top?genre=world&all-countries"
+    page = urlopen(url)
+    soup = BeautifulSoup(page, 'lxml')
+    chart = soup.find(id="app")
+    F = csv.writer(open('worldlist.csv','w'))
+    F.writerow (['Name','Link'])
+    chart1 = chart.find('section', class_='sounds')
+    CHART_LIST = chart1.find_all('a')
+    for chart_item in CHART_LIST:
+        NAMES = chart_item.contents[0]
+        LINKS = 'https://soundcloud.com/charts/top?genre=world&all-countries' + chart_item.get('href')
+        show_selection()
+                
+def show_selection(): 
+    print(NAMES,LINKS)
+    F.writerow([NAMES.encode("utf-8"),LINKS.encode("utf-8")])
+    
+def cleaned():
+    del NAMES, LINKS, CHART_LIST,F
+
+#Main
+get_selection()    
+cleaned()
